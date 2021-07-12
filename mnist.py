@@ -26,10 +26,10 @@ from torchvision import datasets, transforms
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 logger.addHandler(logging.StreamHandler(sys.stdout))
-remote_server_uri = "http://175.41.216.32:5000" # set to your server URI
+remote_server_uri = "" # set to your server URI
 
 mlflow.set_tracking_uri(remote_server_uri)
-mlflow.set_experiment("mnist_mizo") #単位に分けるイメージ。個人の名前を入れる_mizoみたいな感じで。
+mlflow.set_experiment("")
 
 if "SAGEMAKER_METRICS_DIRECTORY" in os.environ:
     log_file_handler = logging.FileHandler(
@@ -43,26 +43,6 @@ if "SAGEMAKER_METRICS_DIRECTORY" in os.environ:
     log_file_handler.setFormatter(formatter)
     logger.addHandler(log_file_handler)
 
-# Based on https://github.com/pytorch/examples/blob/master/mnist/main.py
-"""
-class Net(nn.Module):
-    def __init__(self, hidden_channels, kernel_size, drop_out):
-        super(Net, self).__init__()
-        self.conv1 = nn.Conv2d(1, hidden_channels, kernel_size=kernel_size)
-        self.conv2 = nn.Conv2d(hidden_channels, 20, kernel_size=kernel_size)
-        self.conv2_drop = nn.Dropout2d(p=drop_out)
-        self.fc1 = nn.Linear(320, 50)
-        self.fc2 = nn.Linear(50, 10)
-
-    def forward(self, x):
-        x = F.relu(F.max_pool2d(self.conv1(x), 2))
-        x = F.relu(F.max_pool2d(self.conv2_drop(self.conv2(x)), 2))
-        x = x.view(-1, 320)
-        x = F.relu(self.fc1(x))
-        x = F.dropout(x, training=self.training)
-        x = self.fc2(x)
-        return F.log_softmax(x, dim=1)
-"""
 class CustomModel(nn.Module):
     def __init__(self, pretrained=True,):
         super().__init__()
